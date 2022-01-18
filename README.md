@@ -13,6 +13,49 @@ vaccines in optimal order and with sequence-optimized spacers of flexible length
 such that the recovery of contained epitopes is maximized and immunogenicity of 
 arising neo-epitopes is reduced. 
 
+## Installing this fork
+
+This fork is maintained to make it easier to install optivac.
+Create a conda environment using `conda env create -f optivac_conda.yml`.
+The key packages this installs are python=2.7, fred2, coincbc, mhcflurry, and mhcnuggets.
+
+Next install the LKH algorithm, the code below installs it in the optivac conda env `bin` folder.
+```
+wget -P ~/miniconda3/envs/optivac/bin/ http://akira.ruc.dk/~keld/research/LKH/LKH-2.0.9.tgz
+cd ~/miniconda3/envs/optivac/bin/
+tar xvfz ~/miniconda3/envs/optivac/bin/LKH-2.0.9.tgz
+cd LKH-2.0.9
+make
+cd ..
+rm LKH-2.0.9.tgz
+```
+To check the LKH install run a test problem `path-to-LKH/LKH pr2392.par`.
+
+Next clone the OptiVac repository, I have chosen to put it in the optivac
+conda environment's `lib/python2.7/site-packages` folder.
+```
+cd ../lib/python2.7/site-packages
+git clone https://github.com/Vaccitech/OptiVac.git
+```
+
+When running OptiVac the LKH directory must be on $PATH.
+Can be temporarily added with `PATH=$PATH:/home/dwells/miniconda3/envs/optivac/bin/LKH-2.0.9/`.
+You must also refer to the optivac script directly when calling optivac.py.
+For this reason it can be helpful to define the path to optivac.
+
+```
+optivac_path=/home/dwells/miniconda3/envs/optivac/lib/OptiVac
+
+python ${optivac_path}/OptiVac.py \
+ -i epitopes.txt \
+ -a ${optivac_path}/example/allele_probabilities_europe.csv \
+ -o assembled_epitopes.txt \
+ --ips-solver cbc
+``` 
+
+Be aware that some sequence viewers will wrap long sequences across multiple lines.
+OptiVac will interpret these as seperate beads.
+
 Requirement:
 -------------
 Spacer Design uses the following software and libraries:
@@ -75,6 +118,9 @@ Arguments:
   -t THREADS, --threads THREADS
                         Specifies number of threads. If not specified all
                         available logical cpus are used.
+  --seed
+                        Seed for random ordering of string-of-beads polypeptide.
+                        Default 1
 ```
 Example
 ------
