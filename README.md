@@ -37,9 +37,13 @@ conda environment's `lib/python2.7/site-packages` folder.
 cd ../lib/python2.7/site-packages
 git clone https://github.com/Vaccitech/OptiVac.git
 ```
-
-When running OptiVac the LKH directory must be on $PATH.
-Can be temporarily added with `PATH=$PATH:/home/dwells/miniconda3/envs/optivac/bin/LKH-2.0.9/`.
+You must activate the optivac conda env and
+when running OptiVac the LKH directory must be on $PATH.
+Can be temporarily added with
+```
+conda activate optivac
+PATH=$PATH:/home/dwells/miniconda3/envs/optivac/bin/LKH-2.0.9/
+```
 You must also refer to the optivac script directly when calling optivac.py.
 For this reason it can be helpful to define the path to optivac.
 
